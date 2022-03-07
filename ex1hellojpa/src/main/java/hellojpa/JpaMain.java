@@ -16,15 +16,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            Member findMember = em.find(Member.class, 1L);
-            // 비영속
+
+            Team team = new Team();
+            team.setName("TEAM A");
 
             Member member = new Member();
-            member.setUsername("name");
-            System.out.println("==========");
+            member.setUsername("member1");
+            member.setTeam(team);
             em.persist(member);
-            System.out.println("memberId = " + member.getId());
-            System.out.println("==========");
+
+            em.persist(team);
+
+            em.flush(); // flush를 하여 영속성 컨텍스트에 쿼리를날려 싱크를 맞춤
+            em.clear(); // 영속성 컨텍스트를 완전 초기화
+
+
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
