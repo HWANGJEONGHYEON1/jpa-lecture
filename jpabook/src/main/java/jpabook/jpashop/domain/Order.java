@@ -23,6 +23,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
+
     //양방향 연관관계
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
