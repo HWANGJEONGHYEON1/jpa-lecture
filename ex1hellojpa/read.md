@@ -198,3 +198,20 @@
 - em.find() vs em.getReference
   - em.find() : db를 통한 진짜 엔티티 조회
   - em.getReference : 데이터베이스 조회를 미루는 가짜 엔티티 조회
+
+## 지연로딩
+- @ManyToOne(fetch = FetchType.LAZY)
+- 실제 객체를 사용하는 시점에 초기화
+- 
+
+## 즉시로딩
+- @ManyToOne(fetch = FetchType.EAGAR)
+- 조회를 할 때 한번에 초기화(프록시가 필요없음)
+
+## 프록시와 즉시로딩 주의
+- 가급적 지연 로딩만 사용
+- 즉시 로딩 적용하면 예상하지 못한 SQL 발생
+- 즉시로딩은 N+1 문제를 일으킴
+  - 최초 쿼리가 1개인대 추가쿼리가 N개 
+- @ManyToOne, @OneToOne은 기본이 즉시 로딩 => `LAZY` 설정
+- @OneToMany, @ManyToMany는 기본이 지연로딩
