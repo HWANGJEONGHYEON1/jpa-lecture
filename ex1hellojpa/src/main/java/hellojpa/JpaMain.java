@@ -19,12 +19,19 @@ public class JpaMain {
         try {
 
             Member member = new Member();
-            member.setUsername("user1");
-            member.setCreateDate(LocalDateTime.now());
-            member.setCreatedBy("hwang");
+            member.setUsername("Hello");
+            em.persist(member);
 
-            em.flush(); // flush를 하여 영속성 컨텍스트에 쿼리를날려 싱크를 맞춤
-            em.clear(); // 영속성 컨텍스트를 완전 초기화
+            em.flush();
+            em.clear();
+
+            Member refMember = em.getReference(Member.class, member.getId());
+            System.out.println("members.getClass() = " + refMember.getClass());
+
+            Member findMember = em.find(Member.class, refMember.getId());
+            System.out.println("findMember.getClass() = " + findMember.getClass());
+
+            System.out.println("a == a : " + (refMember == findMember));
 
             tx.commit();
         } catch (Exception e) {
@@ -35,5 +42,12 @@ public class JpaMain {
 
 
         emf.close();
+    }
+
+    private static void printMemberAndTeam(Member findMember) {
+        String username = findMember.getUsername();
+        Team team = findMember.getTeam();
+        System.out.println("username = " + username);
+        System.out.println("team = " + team.getName());
     }
 }
