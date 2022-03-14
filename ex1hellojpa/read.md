@@ -202,7 +202,6 @@
 ## 지연로딩
 - @ManyToOne(fetch = FetchType.LAZY)
 - 실제 객체를 사용하는 시점에 초기화
-- 
 
 ## 즉시로딩
 - @ManyToOne(fetch = FetchType.EAGAR)
@@ -215,3 +214,24 @@
   - 최초 쿼리가 1개인대 추가쿼리가 N개 
 - @ManyToOne, @OneToOne은 기본이 즉시 로딩 => `LAZY` 설정
 - @OneToMany, @ManyToMany는 기본이 지연로딩
+
+## 영속성 전이 : cascade
+- 특정엔티티를 영속 상태로 만들 때, 연관된 엔티티도 함께 영속상태를 만들고 싶을 때
+  - ex) 부모 엔티티를 저장할 때 자식 엔티티도 함께 저장 
+- 연관관계를 매핑하는 것은 상관없다.
+- 종류
+  - ALL : 모두 적용
+  - PERSIST : 영속
+  - REMOVE : 삭제
+  - MERGE : 병합
+- 고아객체
+  - 부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제
+  - `orpahnRemoval = true`
+  - delete from Child where id=?
+  - 참조하는 곳이 하나일 때 사용해야함
+  - 특정 엔티티가 개인 소유할 때 사용
+  - 참조가 제거된 엔티티는 다른 곳에서 참조하지 않는 고아객체로 보고 삭제하는 기능
+- ALL + orpahnRemoval = true
+  - 스스로 생명주기를 관리하는 엔티티는 em.persist() 영속화, em.remove() 제거
+  - 부모 엔티티를 통해 자식의 생명주기를 관리
+  - DDD의 Aggregate Root 개념을 구현할 때 유용
