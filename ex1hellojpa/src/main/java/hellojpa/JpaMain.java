@@ -17,21 +17,32 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Address address = new Address("city", "street", "1000");
+            Member member = new Member();
+            member.setUsername("a");
+            member.setHomeAddress(address);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            member.getAddressHistory().add(new AddressEntity("old", "street", "1000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "1000"));
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildren().remove(0);
+            System.out.println("=================START");
+            Member findMember = em.find(Member.class, member.getId());
+
+//            findMember.setHomeAddress(new Address("newCity", "street", "1000"));
+
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+//            findMember.getAddressHistory().remove(new AddressEntity("old", "street", "1000"));
+//            findMember.getAddressHistory().add(new Address("new", "street", "1000"));
 
 
             tx.commit();
@@ -45,10 +56,4 @@ public class JpaMain {
         emf.close();
     }
 
-    private static void printMemberAndTeam(Member findMember) {
-        String username = findMember.getUsername();
-        Team team = findMember.getTeam();
-        System.out.println("username = " + username);
-        System.out.println("team = " + team.getName());
-    }
 }
