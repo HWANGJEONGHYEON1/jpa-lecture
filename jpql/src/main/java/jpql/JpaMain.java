@@ -15,25 +15,41 @@ public class JpaMain {
         try {
 
             Team team = new Team();
-            team.setName("team1");
+            team.setName("teamA");
             em.persist(team);
 
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
             Member member = new Member();
-            member.setUsername("Member " + 1);
+            member.setUsername("회원1");
             member.setAge(1);
             member.setTeam(team);
             em.persist(member);
 
+            Member member1 = new Member();
+            member1.setUsername("회원2");
+            member1.setAge(2);
+            member1.setTeam(team);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("회원3");
+            member2.setAge(3);
+            member2.setTeam(teamB);
+            em.persist(member2);
+
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m, t from Member m join m.team t ", Member.class)
-                    .getResultList();
+            // 패치 조인으로 회원과 팀을 함께 조회해서 지연로딩 X
 
-            System.out.println("result.size : " + resultList.size());
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1);
-            }
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+
+            System.out.println("resultCount = " + resultCount);
+
 
             tx.commit();
         } catch (Exception e) {
