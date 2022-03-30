@@ -61,3 +61,6 @@
   - Long과 Integer 중에서 Long을 쓰는 이유는 표현범위 때문입니다.
   - Long이 Integer보다 월등히 많은 수를 표현할 수 있기 때문에 Long을 사용합니다.
   - 물론 Integer의 범위로도 충분하다면 Integer를 사용하셔도 무방합니다.
+
+## 메모리 디비(스프링 부트 지원)
+- 테스트 시 자동으로 jdbc:h2:mem:test로 커넥션을 얻어온다.
