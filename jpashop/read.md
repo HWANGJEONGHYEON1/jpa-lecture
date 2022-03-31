@@ -64,3 +64,30 @@
 
 ## 메모리 디비(스프링 부트 지원)
 - 테스트 시 자동으로 jdbc:h2:mem:test로 커넥션을 얻어온다.
+
+## 변경감지와 병합
+- 준영속 엔티티
+  - 영속성 컨텍스트가 더는 관리하지 않는 엔티티
+  - 이미 디비에 다녀온 상태(아이디 PK가 이미 있는)
+- 준영속 엔티티를 수정하는 2가지 방법
+  - 변경감지
+  
+  ```java
+    @Transactional
+    public void updateItem(Long itemId, Book param) {
+        Item item = itemRepository.findOne(itemId);
+        item.setPrice(param.getPrice());
+        item.setName(param.getName());
+        item.setStockQuantity(param.getStockQuantity());
+    }
+  
+  ```
+  - 병합(merge)
+    - 준영속 상태를 영속상태로 변경할 때 사용하는 기능
+    - merge() 실행
+      - 파라미터로 넘어온 준영속 엔티티의 식별자 값으로 1차 캐시에서 엔티티 조회
+      - 없으면 디비에서 조회 후 1차 캐시 저장
+      - 조회한 영속 엔티티에 넘어온 파라미터를 set
+      - 영속상태의 엔티티를 반환
+  - *주의*
+    - `변경 감지 기능을 사용하면 원하는 속상만 update지만, 병합을 사용하면 모든 속성이 변경 => 머지 사용 지양하자`
