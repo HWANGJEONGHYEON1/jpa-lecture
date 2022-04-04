@@ -11,8 +11,6 @@ public class SignUpFormValidator implements Validator {
 
     private final AccountRepository accountRepository;
 
-    private String name;
-
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.isAssignableFrom(SignUpForm.class);
