@@ -1,9 +1,11 @@
-package com.studyolle.account.domain;
+package com.studyolle.domain;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +30,7 @@ public class Account {
 
     private LocalDateTime emailCheckTokenGeneratedAt;
 
-    private LocalDateTime joinedAt; // 가입날짜
+    private LocalDateTime joinedAt;
 
     private String bio;
 
@@ -36,12 +38,11 @@ public class Account {
 
     private String occupation;
 
-    private String location; // 거주지역
+    private String location;
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
-    // 알림 설정
     private boolean studyCreatedByEmail;
 
     private boolean studyCreatedByWeb = true;
@@ -54,6 +55,11 @@ public class Account {
 
     private boolean studyUpdatedByWeb = true;
 
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
+
+    @ManyToMany
+    private Set<Zone> zones = new HashSet<>();
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
@@ -70,6 +76,7 @@ public class Account {
     }
 
     public boolean canSendConfirmEmail() {
-        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(10));
+        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
     }
 }
+

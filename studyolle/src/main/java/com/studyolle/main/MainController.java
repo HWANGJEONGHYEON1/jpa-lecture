@@ -1,6 +1,6 @@
 package com.studyolle.main;
 
-import com.studyolle.account.domain.Account;
+import com.studyolle.domain.Account;
 import com.studyolle.account.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

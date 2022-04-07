@@ -1,6 +1,6 @@
 package com.studyolle.account;
 
-import com.studyolle.account.domain.Account;
+import com.studyolle.domain.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

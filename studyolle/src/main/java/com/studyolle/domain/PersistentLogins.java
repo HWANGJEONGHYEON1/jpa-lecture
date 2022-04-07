@@ -1,4 +1,4 @@
-package com.studyolle.account.domain;
+package com.studyolle.domain;
 
 import lombok.Getter;
 import lombok.Setter;
