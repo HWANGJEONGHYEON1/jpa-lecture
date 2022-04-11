@@ -2,7 +2,7 @@ package com.studyolle.settings;
 
 import com.studyolle.account.AccountRepository;
 import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.CurrentAccount;
 import com.studyolle.domain.Account;
 import com.studyolle.settings.form.NicknameForm;
 import com.studyolle.settings.validator.NicknameValidator;
@@ -38,14 +38,14 @@ public class NicknameController {
     }
 
     @GetMapping(SETTINGS_ACCOUNT_URL)
-    public String accountForm(@CurrentUser Account account, Model model) {
+    public String accountForm(@CurrentAccount Account account, Model model) {
         model.addAttribute("account", account);
         model.addAttribute("nicknameForm", modelMapper.map(account, NicknameForm.class));
         return SETTINGS_ACCOUNT_VIEW_NAME;
     }
 
     @PostMapping(SETTINGS_ACCOUNT_URL)
-    public String updateNickname(@CurrentUser Account account, Model model,
+    public String updateNickname(@CurrentAccount Account account, Model model,
                                  @Valid @ModelAttribute NicknameForm nickNameForm,
                                  Errors errors,
                                  RedirectAttributes attributes) {

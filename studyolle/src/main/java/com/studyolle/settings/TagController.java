@@ -3,7 +3,7 @@ package com.studyolle.settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.CurrentAccount;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Tag;
 import com.studyolle.settings.form.TagForm;
@@ -32,7 +32,7 @@ public class TagController {
     private final ObjectMapper objectMapper;
 
     @GetMapping(SETTINGS_TAG_URL)
-    public String updateTags(@CurrentUser Account account, Model model) throws JsonProcessingException {
+    public String updateTags(@CurrentAccount Account account, Model model) throws JsonProcessingException {
         Set<Tag> tags = accountService.getTags(account);
         model.addAttribute("tags", tags.stream()
                 .map(Tag::getTitle)
@@ -49,7 +49,7 @@ public class TagController {
 
     @PostMapping("/settings/tags/add")
     @ResponseBody
-    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+    public ResponseEntity addTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
         Tag tag = tagRepository.findByTitle(title);
 
@@ -65,7 +65,7 @@ public class TagController {
 
     @PostMapping("/settings/tags/remove")
     @ResponseBody
-    public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+    public ResponseEntity removeTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
         Tag tag = tagRepository.findByTitle(title);
 

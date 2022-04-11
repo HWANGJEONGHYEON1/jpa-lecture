@@ -3,7 +3,7 @@ package com.studyolle.zone;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.CurrentAccount;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Zone;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class ZoneController {
     private final ObjectMapper objectMapper;
 
     @GetMapping("/settings/zones")
-    public String zoneForm(@CurrentUser Account account, Model model) throws JsonProcessingException {
+    public String zoneForm(@CurrentAccount Account account, Model model) throws JsonProcessingException {
         model.addAttribute("account", account);
         Set<Zone> zones = zoneService.getZones(account);
         model.addAttribute("zones", zones.stream().map(Zone::toString).collect(Collectors.toList()));
@@ -41,7 +41,7 @@ public class ZoneController {
 
     @PostMapping("/settings/zones/add")
     @ResponseBody
-    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+    public ResponseEntity addZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
         Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if (zone == null) {
             return ResponseEntity.badRequest().build();
@@ -53,7 +53,7 @@ public class ZoneController {
 
     @PostMapping("/settings/zones/remove")
     @ResponseBody
-    public ResponseEntity removeZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+    public ResponseEntity removeZone(@CurrentAccount Account account, @RequestBody ZoneForm zoneForm) {
         Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if (zone == null) {
             return ResponseEntity.badRequest().build();

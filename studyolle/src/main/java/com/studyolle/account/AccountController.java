@@ -73,14 +73,14 @@ public class AccountController {
     }
 
     @GetMapping("/check-email")
-    public String checkEmail(Model model, @CurrentUser Account account) {
+    public String checkEmail(Model model, @CurrentAccount Account account) {
         String view = "account/check-email";
         model.addAttribute("email", account.getEmail());
         return view;
     }
 
     @GetMapping("/resend-confirm-email")
-    public String resendConfirmEmail(Model model, @CurrentUser Account account) {
+    public String resendConfirmEmail(Model model, @CurrentAccount Account account) {
         String view = "account/check-email";
         if (!account.canSendConfirmEmail()) {
             model.addAttribute("error", "인증 이메일은 10분에 한번 전송할 수 있습니다.");
@@ -94,7 +94,7 @@ public class AccountController {
     }
 
     @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable("nickname") String nickname, Model model, @CurrentUser Account account) {
+    public String viewProfile(@PathVariable("nickname") String nickname, Model model, @CurrentAccount Account account) {
         Account byNickname = accountRepository.findByNickname(nickname);
         if (byNickname == null) {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");

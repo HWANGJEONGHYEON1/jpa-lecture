@@ -1,7 +1,7 @@
 package com.studyolle.settings;
 
 import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.CurrentAccount;
 import com.studyolle.domain.Account;
 import com.studyolle.settings.form.Notifications;
 import com.studyolle.settings.form.PasswordForm;
@@ -43,7 +43,7 @@ public class SettingsController {
     }
 
     @GetMapping(SETTINGS_PROFILE_URL)
-    public String profileUpdateForm(@CurrentUser Account account, Model model) {
+    public String profileUpdateForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Profile.class));
 
@@ -51,7 +51,7 @@ public class SettingsController {
     }
 
     @PostMapping(SETTINGS_PROFILE_URL)
-    public String updateProfile(@CurrentUser Account account, @Valid Profile profile, Errors errors,
+    public String updateProfile(@CurrentAccount Account account, @Valid Profile profile, Errors errors,
                                 Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
             model.addAttribute(account);
@@ -64,14 +64,14 @@ public class SettingsController {
     }
 
     @GetMapping(SETTINGS_PASSWORD_URL)
-    public String changePasswordForm(@CurrentUser Account account, Model model) {
+    public String changePasswordForm(@CurrentAccount Account account, Model model) {
         model.addAttribute("account", account);
         model.addAttribute("passwordForm", new PasswordForm());
         return SETTINGS_PASSWORD_VIEW_NAME;
     }
 
     @PostMapping(SETTINGS_PASSWORD_URL)
-    public String changePassword(@CurrentUser Account account,
+    public String changePassword(@CurrentAccount Account account,
                                  Model model,
                                  @Valid @ModelAttribute PasswordForm passwordForm,
                                  Errors errors, RedirectAttributes redirectAttributes) {
@@ -87,14 +87,14 @@ public class SettingsController {
     }
 
     @GetMapping(SETTINGS_NOTIFICATIONS_URL)
-    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+    public String updateNotificationsForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute("notifications", modelMapper.map(account, Notifications.class));
         return SETTINGS_NOTIFICATIONS_VIEW_NAME;
     }
 
     @PostMapping(SETTINGS_NOTIFICATIONS_URL)
-    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+    public String updateNotifications(@CurrentAccount Account account, @Valid Notifications notifications, Errors errors,
                                       Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
             model.addAttribute(account);

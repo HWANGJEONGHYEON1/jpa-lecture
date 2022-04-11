@@ -36,6 +36,9 @@ class SettingControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+
+
     @AfterEach
     void afterEach() {
         accountRepository.deleteAll();
