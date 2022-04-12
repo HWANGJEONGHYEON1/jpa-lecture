@@ -37,3 +37,8 @@
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
 ```
+
+## JPA Hint & Lock
+- JPA 쿼리 힌트
+- `@QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))`
+- 
