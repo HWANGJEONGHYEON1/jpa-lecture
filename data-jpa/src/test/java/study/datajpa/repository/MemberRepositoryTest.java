@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -251,5 +252,25 @@ class MemberRepositoryTest {
         List<Member> lockByUsername = memberRepository.findLockByUsername(member1.getUsername());
 
         em.flush();
+    }
+
+    @Test
+    void customCall() {
+        List<Member> memberCustom = memberRepository.findMemberCustom();
+    }
+
+    @Test
+    void jpaEventBaseEntity() throws InterruptedException {
+        Member member = new Member("member1");
+        memberRepository.save(member);
+
+        Thread.sleep(100);
+        member.setUsername("member2");
+
+        em.flush();
+        em.clear();
+
+        Optional<Member> byId = memberRepository.findById(member.getId());
+
     }
 }
