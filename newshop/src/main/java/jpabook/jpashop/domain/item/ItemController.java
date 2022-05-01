@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,8 +19,8 @@ public class ItemController {
 
     @GetMapping("/items/new")
     public String form(Model model) {
-        model.addAttribute(new ItemForm());
-        // 영화, 책, 앨범을 셀렉트 박스로 넣어야함. 각 타입과 같이? 아니면 아이디?
+        model.addAttribute("form", new ItemForm());
+        // 영화, 책, 앨범을 셀렉트 박스로 넣어야함. 각 타입과 같이? 아니면 아이디? => 나중으로 일단 기능 구현
         return "items/createItemForm";
     }
 
