@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -16,6 +19,34 @@ import java.util.Map;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemRepository itemRepository;
+
+    @GetMapping("/items/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+
+        final Item updateItem = itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("수정해야할 ID가 없습니다."));
+
+        model.addAttribute("form", updateItem);
+        return "items/updateItemForm";
+    }
+
+    @PostMapping("/items/{id}/edit")
+    public String edit(ItemForm itemForm,
+                       @PathVariable Long id,
+                       Model model,
+                       RedirectAttributes attributes) {
+        itemService.edit(itemForm, id);
+        model.addAttribute("items", itemRepository.findAll());
+        return "items/itemList";
+
+    }
+
+    @GetMapping("/items")
+    public String items(Model model) {
+        model.addAttribute("items", itemRepository.findAll());
+        return "items/itemList";
+    }
 
     @GetMapping("/items/new")
     public String form(Model model) {

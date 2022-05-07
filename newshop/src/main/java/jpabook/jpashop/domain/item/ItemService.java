@@ -14,8 +14,14 @@ public class ItemService {
     @Transactional
     public Long add(ItemForm itemForm) {
         Item item = new Book();
-        item.createItem(itemForm);
         final Item savedItem = itemRepository.save(item.createItem(itemForm));
         return savedItem.getId();
+    }
+
+    @Transactional
+    public void edit(ItemForm itemForm, Long id) {
+        final Item item = itemRepository.findById(id)
+                .get();
+        item.updateItem(itemForm);
     }
 }

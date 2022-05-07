@@ -26,5 +26,14 @@ public abstract class Item {
         this.stockQuantity = itemForm.getStockQuantity();
     }
 
+    public void updateItem(ItemForm itemForm) {
+        this.name = itemForm.getName();
+        this.price = itemForm.getPrice();
+        this.stockQuantity = itemForm.getStockQuantity();
+        updateItemSub(itemForm);
+    }
+
+    protected abstract void updateItemSub(ItemForm itemForm);
+
     public abstract Item createItem(ItemForm itemForm);
 }

@@ -10,6 +10,11 @@ public class Movie extends Item {
     private String actor;
 
     @Override
+    protected void updateItemSub(ItemForm itemForm) {
+
+    }
+
+    @Override
     public Item createItem(ItemForm itemForm) {
         return null;
     }

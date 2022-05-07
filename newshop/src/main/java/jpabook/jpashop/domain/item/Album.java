@@ -10,6 +10,11 @@ public class Album extends Item {
     private String etc;
 
     @Override
+    protected void updateItemSub(ItemForm itemForm) {
+
+    }
+
+    @Override
     public Item createItem(ItemForm itemForm) {
         return null;
     }
