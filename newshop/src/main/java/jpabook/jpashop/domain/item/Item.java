@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain.item;
 
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,4 +37,13 @@ public abstract class Item {
     protected abstract void updateItemSub(ItemForm itemForm);
 
     public abstract Item createItem(ItemForm itemForm);
+
+    public void removeStock(int count) {
+        int restStock = stockQuantity - count;
+
+        if (restStock < 0) {
+            throw new NotEnoughStockException("남아있는 물량이 없습니다.");
+        }
+        stockQuantity = restStock;
+    }
 }

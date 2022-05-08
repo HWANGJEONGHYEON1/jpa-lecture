@@ -1,10 +1,18 @@
 package jpabook.jpashop.domain.order;
 
 import jpabook.jpashop.domain.item.Item;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
 
     @Id
@@ -22,4 +30,13 @@ public class OrderItem {
     private int orderPrice;
 
     private int orderCount;
+
+    public static OrderItem createOrderItem(Item item, int count) {
+        item.removeStock(count);
+        return OrderItem.builder()
+                .item(item)
+                .orderPrice(item.getPrice())
+                .orderCount(count)
+                .build();
+    }
 }

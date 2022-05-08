@@ -1,10 +1,12 @@
 package jpabook.jpashop.domain.delivery;
 
 import jpabook.jpashop.domain.member.Address;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
 public class Delivery {
 
     @GeneratedValue
@@ -16,4 +18,8 @@ public class Delivery {
 
     @Embedded
     private Address address;
+
+    public Delivery(Address address) {
+        this.address = address;
+    }
 }
