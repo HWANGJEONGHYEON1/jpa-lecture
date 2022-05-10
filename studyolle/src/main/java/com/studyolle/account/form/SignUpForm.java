@@ -1,15 +1,13 @@
 package com.studyolle.account.form;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@Getter
-@Setter
+@Data
 public class SignUpForm {
 
     @NotBlank
@@ -22,6 +20,7 @@ public class SignUpForm {
     private String email;
 
     @NotBlank
-    @Length(min = 1, max = 50)
+    @Length(min = 8, max = 50)
     private String password;
+
 }

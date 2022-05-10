@@ -8,4 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("app")
 public class AppProperties {
+
+    private String host;
+
 }

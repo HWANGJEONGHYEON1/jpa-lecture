@@ -1,6 +1,7 @@
 package com.studyolle.settings.validator;
 
 import com.studyolle.account.AccountRepository;
+import com.studyolle.domain.Account;
 import com.studyolle.settings.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,10 @@ public class NicknameValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        NicknameForm nickNameForm = (NicknameForm) target;
-
-        if (accountRepository.existsByNickname(nickNameForm.getNickname())) {
-            errors.rejectValue("ㅈ", "wrong value", "이미 존재하는 닉네임입니다.");
+        NicknameForm nicknameForm = (NicknameForm) target;
+        Account byNickname = accountRepository.findByNickname(nicknameForm.getNickname());
+        if (byNickname != null) {
+            errors.rejectValue("nickname", "wrong.value", "입력하신 닉네임을 사용할 수 없습니다.");
         }
     }
 }

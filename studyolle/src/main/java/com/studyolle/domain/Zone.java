@@ -2,21 +2,15 @@ package com.studyolle.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter @Setter @EqualsAndHashCode(of = "id")
+@Builder @AllArgsConstructor @NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"city", "province"}))
 public class Zone {
 
-    @GeneratedValue @Id
+    @Id @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -26,10 +20,11 @@ public class Zone {
     private String localNameOfCity;
 
     @Column(nullable = true)
-    private String province; // 도
+    private String province;
 
     @Override
     public String toString() {
         return String.format("%s(%s)/%s", city, localNameOfCity, province);
     }
+
 }

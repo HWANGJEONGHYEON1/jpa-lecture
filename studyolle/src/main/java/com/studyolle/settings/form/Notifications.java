@@ -3,6 +3,7 @@ package com.studyolle.settings.form;
 import com.studyolle.domain.Account;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 public class Notifications {
@@ -18,4 +19,5 @@ public class Notifications {
     private boolean studyUpdatedByEmail;
 
     private boolean studyUpdatedByWeb;
+
 }

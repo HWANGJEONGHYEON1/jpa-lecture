@@ -1,7 +1,5 @@
 package com.studyolle.zone;
 
-import com.studyolle.account.AccountRepository;
-import com.studyolle.domain.Account;
 import com.studyolle.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -14,8 +12,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,30 +20,19 @@ import java.util.stream.Collectors;
 public class ZoneService {
 
     private final ZoneRepository zoneRepository;
-    private final AccountRepository accountRepository;
 
     @PostConstruct
     public void initZoneData() throws IOException {
         if (zoneRepository.count() == 0) {
-            Resource resource = new ClassPathResource("zones.csv");
-            List<Zone> zoneList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
+            Resource resource = new ClassPathResource("zones_kr.csv");
+            List<Zone> zoneList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
                     .map(line -> {
                         String[] split = line.split(",");
-                        return Zone.builder()
-                                .city(split[0])
-                                .localNameOfCity(split[1])
-                                .province(split[2])
-                                .build();
+                        return Zone.builder().city(split[0]).localNameOfCity(split[1]).province(split[2]).build();
                     }).collect(Collectors.toList());
-
             zoneRepository.saveAll(zoneList);
         }
     }
 
-    public Set<Zone> getZones(Account account) {
-        Optional<Account> byId = accountRepository.findById(account.getId());
-        return byId.orElseThrow().getZones();
-    }
 
 }

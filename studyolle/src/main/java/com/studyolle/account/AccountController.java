@@ -1,6 +1,5 @@
 package com.studyolle.account;
 
-
 import com.studyolle.account.form.SignUpForm;
 import com.studyolle.account.validator.SignUpFormValidator;
 import com.studyolle.domain.Account;
@@ -9,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -21,20 +17,18 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final SignUpFormValidator validator;
-
+    private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
-
     private final AccountRepository accountRepository;
 
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(validator);
+        webDataBinder.addValidators(signUpFormValidator);
     }
 
     @GetMapping("/sign-up")
-    public String signUp(Model model) {
-        model.addAttribute("signUpForm", new SignUpForm());
+    public String signUpForm(Model model) {
+        model.addAttribute(new SignUpForm());
         return "account/sign-up";
     }
 
@@ -46,7 +40,6 @@ public class AccountController {
 
         Account account = accountService.processNewAccount(signUpForm);
         accountService.login(account);
-        // 회원가입처리
         return "redirect:/";
     }
 
@@ -55,38 +48,33 @@ public class AccountController {
         Account account = accountRepository.findByEmail(email);
         String view = "account/checked-email";
         if (account == null) {
-            model.addAttribute("error", "wrong email");
+            model.addAttribute("error", "wrong.email");
             return view;
         }
 
         if (!account.isValidToken(token)) {
-            model.addAttribute("error", "wrong email");
+            model.addAttribute("error", "wrong.token");
             return view;
         }
 
         accountService.completeSignUp(account);
-
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
-
         return view;
     }
 
     @GetMapping("/check-email")
-    public String checkEmail(Model model, @CurrentAccount Account account) {
-        String view = "account/check-email";
+    public String checkEmail(@CurrentAccount Account account, Model model) {
         model.addAttribute("email", account.getEmail());
-        return view;
+        return "account/check-email";
     }
 
     @GetMapping("/resend-confirm-email")
-    public String resendConfirmEmail(Model model, @CurrentAccount Account account) {
-        String view = "account/check-email";
+    public String resendConfirmEmail(@CurrentAccount Account account, Model model) {
         if (!account.canSendConfirmEmail()) {
-            model.addAttribute("error", "인증 이메일은 10분에 한번 전송할 수 있습니다.");
-            model.addAttribute("account", account);
+            model.addAttribute("error", "인증 이메일은 1시간에 한번만 전송할 수 있습니다.");
             model.addAttribute("email", account.getEmail());
-            return view;
+            return "account/check-email";
         }
 
         accountService.sendSignUpConfirmEmail(account);
@@ -94,29 +82,15 @@ public class AccountController {
     }
 
     @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable("nickname") String nickname, Model model, @CurrentAccount Account account) {
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
         Account byNickname = accountRepository.findByNickname(nickname);
-        if (byNickname == null) {
+        if (nickname == null) {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
 
-        model.addAttribute("account", byNickname);
+        model.addAttribute(byNickname);
         model.addAttribute("isOwner", byNickname.equals(account));
-
         return "account/profile";
-    }
-
-    @GetMapping("/login-by-email")
-    public String loginByEmail(String token, String email, Model model) {
-        Account account = accountRepository.findByEmail(email);
-        String view = "account/logged-in-by-email";
-        if (account == null || !account.isValidToken(token)) {
-            model.addAttribute("error", "로그인할 수 없습니다.");
-            return view;
-        }
-
-        accountService.login(account);
-        return view;
     }
 
     @GetMapping("/email-login")
@@ -141,4 +115,18 @@ public class AccountController {
         attributes.addFlashAttribute("message", "이메일 인증 메일을 발송했습니다.");
         return "redirect:/email-login";
     }
+
+    @GetMapping("/login-by-email")
+    public String loginByEmail(String token, String email, Model model) {
+        Account account = accountRepository.findByEmail(email);
+        String view = "account/logged-in-by-email";
+        if (account == null || !account.isValidToken(token)) {
+            model.addAttribute("error", "로그인할 수 없습니다.");
+            return view;
+        }
+
+        accountService.login(account);
+        return view;
+    }
+
 }

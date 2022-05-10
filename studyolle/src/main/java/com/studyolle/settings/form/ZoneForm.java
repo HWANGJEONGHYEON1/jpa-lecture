@@ -1,4 +1,4 @@
-package com.studyolle.zone;
+package com.studyolle.settings.form;
 
 import com.studyolle.domain.Zone;
 import lombok.Data;
@@ -25,4 +25,5 @@ public class ZoneForm {
                 .localNameOfCity(this.getLocalNameOfCity())
                 .province(this.getProvinceName()).build();
     }
+
 }
