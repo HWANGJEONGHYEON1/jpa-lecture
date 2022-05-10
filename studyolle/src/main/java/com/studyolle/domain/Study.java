@@ -1,9 +1,11 @@
 package com.studyolle.domain;
 
+import com.studyolle.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,10 +17,10 @@ public class Study {
     private Long id;
 
     @ManyToMany
-    private Set<Account> managers;
+    private Set<Account> managers = new HashSet<>();
 
     @ManyToMany
-    private Set<Account> members;
+    private Set<Account> members = new HashSet<>();
 
     @Column(unique = true)
     private String path;
@@ -27,10 +29,11 @@ public class Study {
 
     private String shortDescription;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob @Basic(fetch = FetchType.LAZY)
     private String fullDescription;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    // varchar255로 못 담음
+    @Lob @Basic(fetch = FetchType.LAZY)
     private String image;
 
     @ManyToMany
@@ -53,4 +56,21 @@ public class Study {
 
     private boolean useBanner;
 
+    public void addManager(Account account) {
+        this.managers.add(account);
+    }
+
+    public boolean isJoinable(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+        return isPublished() && isRecruiting()
+                && !members.contains(account) && !managers.contains(account);
+    }
+
+    public boolean isMember(UserAccount userAccount) {
+        return members.contains(userAccount.getAccount());
+    }
+
+    public boolean isManager(UserAccount userAccount) {
+        return managers.contains(userAccount.getAccount());
+    }
 }

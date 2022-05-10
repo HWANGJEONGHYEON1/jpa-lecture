@@ -4,6 +4,7 @@ import com.WithAccount;
 import com.studyolle.account.AccountRepository;
 import com.studyolle.account.AccountService;
 import com.studyolle.domain.Account;
+import com.studyolle.mail.EmailService;
 import com.studyolle.settings.SettingsController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,8 +38,8 @@ class SettingControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-
+    @MockBean
+    EmailService emailService;
 
     @AfterEach
     void afterEach() {

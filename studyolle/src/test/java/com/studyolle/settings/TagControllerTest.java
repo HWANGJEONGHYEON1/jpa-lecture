@@ -6,12 +6,14 @@ import com.studyolle.account.AccountRepository;
 import com.studyolle.account.AccountService;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Tag;
+import com.studyolle.mail.EmailService;
 import com.studyolle.settings.form.TagForm;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ class TagControllerTest {
     @Autowired TagRepository tagRepository;
     @Autowired AccountRepository accountRepository;
     @Autowired AccountService accountService;
+    @MockBean
+    EmailService emailService;
 
     @WithAccount("abc")
     @DisplayName("태그 수정 폼")
