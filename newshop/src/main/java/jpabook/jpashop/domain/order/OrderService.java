@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,8 +30,20 @@ public class OrderService {
         final OrderItem orderItem = OrderItem.createOrderItem(item, orderForm.getCount());
 
         // 주문
-        Order.createOrder(member, orderItem);
+        Order order = Order.createOrder(member, orderItem);
+        Order savedOrder = orderRepository.save(order);
 
-        return null;
+        return savedOrder.getId();
+    }
+
+    public List<Order> findOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Transactional
+    public void cancel(Long id) {
+        orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("일치하는 itemID가 없습니다."))
+                .change(OrderStatus.CANCEL);
     }
 }

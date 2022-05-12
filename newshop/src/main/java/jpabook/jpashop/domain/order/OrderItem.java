@@ -29,14 +29,18 @@ public class OrderItem {
 
     private int orderPrice;
 
-    private int orderCount;
+    private int count;
 
     public static OrderItem createOrderItem(Item item, int count) {
         item.removeStock(count);
         return OrderItem.builder()
                 .item(item)
                 .orderPrice(item.getPrice())
-                .orderCount(count)
+                .count(count)
                 .build();
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

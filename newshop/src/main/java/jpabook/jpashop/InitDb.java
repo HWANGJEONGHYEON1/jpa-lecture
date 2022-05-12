@@ -1,7 +1,11 @@
 //package jpabook.jpashop;
 //
 //import jpabook.jpashop.domain.*;
+//import jpabook.jpashop.domain.delivery.Delivery;
 //import jpabook.jpashop.domain.item.Book;
+//import jpabook.jpashop.domain.member.Member;
+//import jpabook.jpashop.domain.order.Order;
+//import jpabook.jpashop.domain.order.OrderItem;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
