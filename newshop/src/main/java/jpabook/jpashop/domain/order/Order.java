@@ -1,8 +1,6 @@
 package jpabook.jpashop.domain.order;
 
-import com.mysema.commons.lang.Assert;
 import jpabook.jpashop.domain.delivery.Delivery;
-import jpabook.jpashop.domain.member.Address;
 import jpabook.jpashop.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -35,7 +31,7 @@ public class Order {
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.ORDINAL)
-    private OrderStatus orderStatus;
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private final List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -58,7 +54,7 @@ public class Order {
     public static Order createOrder(Member member, OrderItem... orderItems) {
         Delivery delivery = new Delivery(member.getAddress());
         Order order = Order.builder()
-                .orderStatus(OrderStatus.ORDER)
+                .status(OrderStatus.ORDER)
                 .member(member)
                 .orderDate(LocalDateTime.now())
                 .build();

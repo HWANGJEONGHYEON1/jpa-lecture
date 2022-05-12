@@ -12,15 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -89,7 +83,7 @@ class OrderServiceTest {
         Order findOrder = orderRepository.findById(orderId)
                 .orElseThrow(NotEnoughStockException::new);
 
-        Assertions.assertThat(findOrder.getOrderStatus()).isEqualTo(OrderStatus.ORDER);
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
         Assertions.assertThat(findOrder.getMember()).isEqualTo(member);
         Assertions.assertThat(findOrder.getOrderItems().get(0).getOrderCount()).isEqualTo(5);
     }
