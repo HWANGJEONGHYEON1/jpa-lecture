@@ -39,4 +39,8 @@ public class OrderItem {
                 .orderCount(count)
                 .build();
     }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
