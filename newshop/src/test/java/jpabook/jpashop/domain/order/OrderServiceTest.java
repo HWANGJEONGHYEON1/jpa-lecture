@@ -73,10 +73,7 @@ class OrderServiceTest {
         Item item = itemRepository.findByName("JPA 연습중인 책");
         Member member = memberRepository.findByName("JPA");
 
-        OrderForm orderForm = new OrderForm();
-        orderForm.setCount(5);
-        orderForm.setItemId(item.getId());
-        orderForm.setMemberId(member.getId());
+        OrderForm orderForm = getOrderForm(item, member);
 
         Long orderId = orderService.order(orderForm);
 
@@ -85,6 +82,32 @@ class OrderServiceTest {
 
         Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
         Assertions.assertThat(findOrder.getMember()).isEqualTo(member);
-        Assertions.assertThat(findOrder.getOrderItems().get(0).getOrderCount()).isEqualTo(5);
+        Assertions.assertThat(findOrder.getOrderItems().get(0).getCount()).isEqualTo(5);
+    }
+
+    private OrderForm getOrderForm(Item item, Member member) {
+        OrderForm orderForm = new OrderForm();
+        orderForm.setCount(5);
+        orderForm.setItemId(item.getId());
+        orderForm.setMemberId(member.getId());
+        return orderForm;
+    }
+
+    @Test
+    @DisplayName("주문 취소")
+    void order_cancel() {
+        Item item = itemRepository.findByName("JPA 연습중인 책");
+        Member member = memberRepository.findByName("JPA");
+
+        OrderForm orderForm = getOrderForm(item, member);
+
+        Long orderId = orderService.order(orderForm);
+        Order findOrder = orderRepository.findById(orderId)
+                .orElseThrow(NotEnoughStockException::new);
+
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
+
+        orderService.cancel(orderId);
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
     }
 }

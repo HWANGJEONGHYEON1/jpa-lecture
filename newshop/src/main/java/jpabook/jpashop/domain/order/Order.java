@@ -30,7 +30,7 @@ public class Order {
 
     private LocalDateTime orderDate;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -65,5 +65,9 @@ public class Order {
         }
 
         return order;
+    }
+
+    public void change(OrderStatus status) {
+        this.status = status;
     }
 }

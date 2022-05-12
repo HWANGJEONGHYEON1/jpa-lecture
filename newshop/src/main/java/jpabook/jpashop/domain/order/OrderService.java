@@ -39,4 +39,11 @@ public class OrderService {
     public List<Order> findOrders() {
         return orderRepository.findAll();
     }
+
+    @Transactional
+    public void cancel(Long id) {
+        orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("일치하는 itemID가 없습니다."))
+                .change(OrderStatus.CANCEL);
+    }
 }
