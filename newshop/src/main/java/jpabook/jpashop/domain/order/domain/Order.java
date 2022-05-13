@@ -52,7 +52,7 @@ public class Order {
         delivery.setOrder(this);
     }
 
-    public static Order createOrder(Member member, OrderItem... orderItems) {
+    public static Order createOrder(Member member, List<OrderItem> orderItems) {
         Delivery delivery = new Delivery(member.getAddress());
         Order order = Order.builder()
                 .status(OrderStatus.ORDER)
