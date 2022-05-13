@@ -1,9 +1,7 @@
 package com.studyolle.study;
 
 import com.WithAccount;
-import com.studyolle.account.AccountRepository;
 import com.studyolle.mail.EmailService;
-import com.studyolle.study.validator.StudyForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -7,6 +7,7 @@ import com.studyolle.account.AccountService;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Zone;
 import com.studyolle.mail.EmailService;
+import com.studyolle.settings.form.ZoneForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,7 @@ class ZoneControllerTest {
     @MockBean
     EmailService emailService;
 
-    private Zone testZone = Zone.builder().city("test").localNameOfCity("테스트시").province("테스트주").build();
+    private final Zone testZone = Zone.builder().city("test").localNameOfCity("테스트시").province("테스트주").build();
 
     @BeforeEach
     void before() {

@@ -2,7 +2,6 @@ package com.studyolle.settings;
 
 import com.WithAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.studyolle.WithAccount;
 import com.studyolle.account.AccountRepository;
 import com.studyolle.account.AccountService;
 import com.studyolle.domain.Account;
@@ -84,18 +83,18 @@ class SettingsControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk());
 
-        Account keesun = accountRepository.findByNickname("keesun");
+        Account abc = accountRepository.findByNickname("abc");
         Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(), testZone.getProvince());
-        assertTrue(keesun.getZones().contains(zone));
+        assertTrue(abc.getZones().contains(zone));
     }
 
     @WithAccount("abc")
     @DisplayName("계정의 지역 정보 추가")
     @Test
     void removeZone() throws Exception {
-        Account keesun = accountRepository.findByNickname("keesun");
+        Account abc = accountRepository.findByNickname("abc");
         Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(), testZone.getProvince());
-        accountService.addZone(keesun, zone);
+        accountService.addZone(abc, zone);
 
         ZoneForm zoneForm = new ZoneForm();
         zoneForm.setZoneName(testZone.toString());
@@ -106,7 +105,7 @@ class SettingsControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk());
 
-        assertFalse(keesun.getZones().contains(zone));
+        assertFalse(abc.getZones().contains(zone));
     }
 
     @WithAccount("abc")
@@ -135,19 +134,19 @@ class SettingsControllerTest {
 
         Tag newTag = tagRepository.findByTitle("newTag");
         assertNotNull(newTag);
-        Account keesun = accountRepository.findByNickname("keesun");
-        assertTrue(keesun.getTags().contains(newTag));
+        Account abc = accountRepository.findByNickname("abc");
+        assertTrue(abc.getTags().contains(newTag));
     }
 
     @WithAccount("abc")
     @DisplayName("계정에 태그 삭제")
     @Test
     void removeTag() throws Exception {
-        Account keesun = accountRepository.findByNickname("keesun");
+        Account abc = accountRepository.findByNickname("abc");
         Tag newTag = tagRepository.save(Tag.builder().title("newTag").build());
-        accountService.addTag(keesun, newTag);
+        accountService.addTag(abc, newTag);
 
-        assertTrue(keesun.getTags().contains(newTag));
+        assertTrue(abc.getTags().contains(newTag));
 
         TagForm tagForm = new TagForm();
         tagForm.setTagTitle("newTag");
@@ -158,7 +157,7 @@ class SettingsControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk());
 
-        assertFalse(keesun.getTags().contains(newTag));
+        assertFalse(abc.getTags().contains(newTag));
     }
 
     @WithAccount("abc")
@@ -223,8 +222,8 @@ class SettingsControllerTest {
                 .andExpect(redirectedUrl(ROOT + SETTINGS + PROFILE))
                 .andExpect(flash().attributeExists("message"));
 
-        Account keesun = accountRepository.findByNickname("keesun");
-        assertEquals(bio, keesun.getBio());
+        Account abc = accountRepository.findByNickname("abc");
+        assertEquals(bio, abc.getBio());
     }
 
     @WithAccount("abc")
@@ -241,8 +240,8 @@ class SettingsControllerTest {
                 .andExpect(model().attributeExists("profile"))
                 .andExpect(model().hasErrors());
 
-        Account keesun = accountRepository.findByNickname("keesun");
-        assertNull(keesun.getBio());
+        Account abc = accountRepository.findByNickname("abc");
+        assertNull(abc.getBio());
     }
 
     @WithAccount("abc")
@@ -267,8 +266,8 @@ class SettingsControllerTest {
                 .andExpect(redirectedUrl(ROOT + SETTINGS + PASSWORD))
                 .andExpect(flash().attributeExists("message"));
 
-        Account keesun = accountRepository.findByNickname("keesun");
-        assertTrue(passwordEncoder.matches("12345678", keesun.getPassword()));
+        Account abc = accountRepository.findByNickname("abc");
+        assertTrue(passwordEncoder.matches("12345678", abc.getPassword()));
     }
 
     @WithAccount("abc")
