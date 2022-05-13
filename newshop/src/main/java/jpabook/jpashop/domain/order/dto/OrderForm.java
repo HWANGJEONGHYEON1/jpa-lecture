@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.order;
+package jpabook.jpashop.domain.order.dto;
 
 import lombok.Getter;
 import lombok.Setter;

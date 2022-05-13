@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.order;
+package jpabook.jpashop.domain.order.domain;
 
 import jpabook.jpashop.domain.item.Item;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,14 @@
 package jpabook.jpashop.domain.order;
 
-import jpabook.jpashop.domain.delivery.Delivery;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.domain.item.ItemRepository;
 import jpabook.jpashop.domain.member.Member;
 import jpabook.jpashop.domain.member.MemberRepository;
+import jpabook.jpashop.domain.order.dto.OrderForm;
+import jpabook.jpashop.domain.order.domain.Order;
+import jpabook.jpashop.domain.order.domain.OrderItem;
+import jpabook.jpashop.domain.order.dto.OrderSearch;
+import jpabook.jpashop.domain.order.dto.OrderSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +40,8 @@ public class OrderService {
         return savedOrder.getId();
     }
 
-    public List<Order> findOrders() {
-        return orderRepository.findAll();
+    public List<OrderSearchResponse> findOrders(OrderSearch orderSearch) {
+        return orderRepository.orderSearchList(orderSearch);
     }
 
     @Transactional

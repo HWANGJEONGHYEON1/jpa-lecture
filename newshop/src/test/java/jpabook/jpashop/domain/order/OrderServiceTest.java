@@ -6,6 +6,8 @@ import jpabook.jpashop.domain.member.Member;
 import jpabook.jpashop.domain.member.MemberRepository;
 import jpabook.jpashop.domain.member.MemberService;
 import jpabook.jpashop.domain.member.dto.MemberForm;
+import jpabook.jpashop.domain.order.dto.OrderForm;
+import jpabook.jpashop.domain.order.domain.Order;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

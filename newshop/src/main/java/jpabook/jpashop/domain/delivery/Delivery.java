@@ -2,7 +2,7 @@ package jpabook.jpashop.domain.delivery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jpabook.jpashop.domain.member.Address;
-import jpabook.jpashop.domain.order.Order;
+import jpabook.jpashop.domain.order.domain.Order;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
