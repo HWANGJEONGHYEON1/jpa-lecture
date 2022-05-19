@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <nav th:replace="fragments.html :: main-nav"></nav>
+    <div th:replace="fragments.html :: study-banner"></div>
+    <div class="container">
+        <div th:replace="fragments.html :: study-info"></div>
+        <div th:replace="fragments.html :: study-menu(studyMenu='image')"></div>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: study-settings-menu(currentMenu='image')"></div>
+            </div>
+
+            <div class="col-8">
+                <div class="row">
+                    <h2 class="col-12">배너 이미지 사용여부</h2>
+                </div>
+                <form th:if="${!study.useBanner}" action="#" th:action="@{'/study/' + ${study.getPath()} + '/settings/banner/enable'}" method="post" novalidate>
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            스터디 메뉴에서 배너 이미지를 사용하고, 아직 사용하지 않았다면 기본 배너 이미지가 사용됩니다.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit"
+                                aria-describedby="submitHelp">배너이미지 사용하기</button>
+                    </div>
+                </form>
+
+                <form th:if="${study.useBanner}" th:action="@{'/study/' + ${study.getPath()} + '/settings/banner/disable'}"
+                      class="col-12" method="post">
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            스터디 배녀의 이미지를 사용하지 않습니다.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit"
+                                aria-describedby="submitHelp">배너이미지 사용하지 않기</button>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <h2 class="col-12">배너 이미지 변경</h2>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            스터디 이미지
+                        </div>
+                        <div id="current-study-image" class="mt-6">
+                            <svg th:if="${#strings.isEmpty(study.image)}" class="rounded"
+                                 th:data-jdenticon-value="${account.nickname}" width="125" height="125"></svg>
+                            <img th:if="${!#strings.isEmpty(study.image)}" class="rounded"
+                                 th:src="${study.image}"
+                                 width="125" height="125" alt="name" th:alt="${account.nickname}"/>
+                        </div>
+                        <div id="new-study-image" class="mt-6"></div>
+                        <div class="card-body">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="study-image-file">
+                                <label class="custom-file-label" for="study-image-file">스터디 이미지 변경</label>
+                            </div>
+                            <div id="new-study-image-control" class="mt-6">
+                                <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                                <button class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                                <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                            </div>
+                            <div id="cropped-new-study-image" class="mt-6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: footer"></div>
+    </div>
+    <link  href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
+    <script src="/node_modules/cropper/dist/cropper.min.js"></script>
+    <script src="/node_modules/jquery-cropper/dist/jquery-cropper.min.js"></script>
+    <script type="application/javascript">
+
+        $(function() {
+            cropper = '';
+            let $confirmBtn = $("#confirm-button");
+            let $resetBtn = $("#reset-button");
+            let $cutBtn = $("#cut-button");
+            let $newstudyImage = $("#new-study-image");
+            let $currentstudyImage = $("#current-study-image");
+            let $resultImage = $("#cropped-new-study-image");
+            let $studyImage = $("#studyImage");
+
+            $newstudyImage.hide();
+            $cutBtn.hide();
+            $resetBtn.hide();
+            $confirmBtn.hide();
+
+            $("#study-image-file").change(function(e) {
+                if (e.target.files.length === 1) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        if (e.target.result) {
+                            let img = document.createElement("img");
+                            img.id = 'new-study';
+                            img.src = e.target.result;
+                            img.width = 250;
+
+                            $newstudyImage.html(img);
+                            $newstudyImage.show();
+                            $currentstudyImage.hide();
+
+                            let $newImage = $(img);
+                            $newImage.cropper({aspectRatio: 1});
+                            cropper = $newImage.data('cropper');
+
+                            $cutBtn.show();
+                            $confirmBtn.hide();
+                            $resetBtn.show();
+                        }
+                    };
+
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            $resetBtn.click(function() {
+                $currentstudyImage.show();
+                $newstudyImage.hide();
+                $resultImage.hide();
+                $resetBtn.hide();
+                $cutBtn.hide();
+                $confirmBtn.hide();
+                $studyImage.val('');
+            });
+
+            $cutBtn.click(function () {
+                let dataUrl = cropper.getCroppedCanvas().toDataURL();
+                let newImage = document.createElement("img");
+                newImage.id = "cropped-new-study-image";
+                newImage.src = dataUrl;
+                newImage.width = 125;
+                $resultImage.html(newImage);
+                $resultImage.show();
+                $confirmBtn.show();
+
+                $confirmBtn.click(function () {
+                    $newstudyImage.html(newImage);
+                    $cutBtn.hide();
+                    $confirmBtn.hide();
+                    $studyImage.val(dataUrl);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
