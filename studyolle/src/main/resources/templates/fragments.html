@@ -15,30 +15,30 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <style>
-    .container {
-        max-width: 100%;
-    }
+        .container {
+            max-width: 100%;
+        }
 
-    .tagify-outside{
-        border: 0;
-        padding: 0;
-        margin: 0;
-    }
+        .tagify-outside{
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
 
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
 
-    body,
-    input,
-    button,
-    select,
-    optgroup,
-    textarea,
-    .tooltip,
-    .popover {
-        font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    }
+        body,
+        input,
+        button,
+        select,
+        optgroup,
+        textarea,
+        .tooltip,
+        .popover {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
     </style>
 </head>
 
@@ -118,35 +118,35 @@
 </div>
 
 <script type="application/javascript" th:fragment="form-validation">
-(function () {
-    'use strict';
+    (function () {
+        'use strict';
 
-    window.addEventListener('load', function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
 
-        // Loop over them and prevent submission
-        Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    }, false)
-}())
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
 </script>
 
 <script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
-$(function() {
-    var csrfToken = /*[[${_csrf.token}]]*/ null;
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-    $(document).ajaxSend(function (e, xhr, options) {
-        xhr.setRequestHeader(csrfHeader, csrfToken);
+    $(function() {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
     });
-});
 </script>
 
 <div th:fragment="study-banner" th:if="${study.useBanner}" class="row" id="study-logo">
@@ -269,14 +269,14 @@ $(function() {
 <div th:fragment="editor-script">
     <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
     <script type="application/javascript">
-    $(function () {
-        $('#fullDescription').summernote({
-            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
-            placeholder: '스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.',
-            tabsize: 2,
-            height: 300
+        $(function () {
+            $('#fullDescription').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.',
+                tabsize: 2,
+                height: 300
+            });
         });
-    });
     </script>
 </div>
 
@@ -286,6 +286,5 @@ $(function() {
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
 
 </html>
