@@ -14,7 +14,7 @@ import java.util.List;
 public class OrderForm {
 
     private Long memberId;
-    private Long[] itemId;
+    private Long itemId;
     private int count;
 
     public List<Long> getItemId() {
