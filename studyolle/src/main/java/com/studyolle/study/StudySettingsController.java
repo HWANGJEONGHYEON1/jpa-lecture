@@ -20,19 +20,27 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/study/{path}/settings")
+@RequiredArgsConstructor
 public class StudySettingsController {
 
     private final StudyService studyService;
-    private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/settings/image")
-    public String viewStudyBanner(@CurrentAccount Account account,
-                                  @PathVariable String path, Model model) {
+    @PostMapping("/banner/enable")
+    public String bannerEnable(@CurrentAccount Account account, @PathVariable String path, Model model) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        study.setUseBanner(true);
+        return "redirect:/study/" + path + "/settings/banner";
+    }
 
-        return "stuy/settings/banner";
+    @GetMapping("/banner")
+    public String viewImage(@CurrentAccount Account account, @PathVariable String path, Model model) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        model.addAttribute(study);
+        model.addAttribute(account);
+
+        return "study/settings/banner";
     }
 
     @GetMapping("/description")
